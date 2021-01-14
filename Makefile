@@ -16,7 +16,8 @@ C_DRIVERS := $(wildcard $(MAKECMDGOALS)/driver.[cS])
 $(MAKECMDGOALS): %: %/a.out
 
 %/a.out: %/file.o
-	clang --target=$(TRIPLE) -static $< $(C_DRIVERS) -o $@
+# Compile drivers and link with GCC
+	$(TRIPLE)-gcc -static $< $(C_DRIVERS) -o $@
 # - ignores exit code, as we don't really care about that in PPCG
 	-printf "%s" "$(STDIN)" | $(QEMU) $@ $(ARGS); echo "exit code: $$?"
 
@@ -31,5 +32,5 @@ $(MAKECMDGOALS): %: %/a.out
 packages:
 	@echo Installing dependencies...
 	@sudo apt-get update -qq >/dev/null
-	@sudo apt-get install -y -qq qemu-user-static libc6-dev-$(LIBC)-cross binutils-$(TRIPLE) >/dev/null
+	@sudo apt-get install -y -qq qemu-user-static libc6-dev-$(LIBC)-cross gcc-$(TRIPLE) >/dev/null
 	
