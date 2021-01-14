@@ -1,0 +1,11 @@
+language: c
+
+matrix:
+  fast_finish: true
+  include:
+    - name: arm-largest-number-v1
+      arch: amd64
+      compiler: clang
+      dist: bionic
+      script:
+        - make arm-largest-number-v1 
