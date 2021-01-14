@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # usage: ./run-test.sh folder-where-test-is
 # First, install the correct tools for the job
 case $1 in
@@ -31,7 +33,7 @@ run_executable()
     for i in $@; do
         printf "\"%s\" " "$i"
     done
-
+    set +o
     eval $QEMU ./a.out $@
     echo "Return code: $?"
 }
@@ -53,13 +55,19 @@ $TRIPLE-size -A file.o
 $TRIPLE-objdump -d file.o
 echo "Compiling test suite"
 
+LDFLAGS=
+
 # If we have _start as a symbol, we will compile without the stdlib.
-if [ $TRIPLE-nm -g file.o | grep -s _start ]; then
+if [ $($TRIPLE-nm -g file.o | grep -s _start) ]; then
     LDFLAGS="$LDFLAGS -nostdlib -ffreestanding"
 fi
 
 # Link file.o, optionally with a driver.c or driver.S if it exists.
-$TRIPLE-gcc -static $LDFLAGS "$(compgen -G 'driver.[cS]' || true)" file.o -o a.out
+$TRIPLE-gcc -static $LDFLAGS $(compgen -G 'driver.[cS]' || true) file.o -o a.out
+
+set +x
+
+echo Running tests...
 # Run the tests.
 if [ -f run.sh ]; then
     . run.sh
