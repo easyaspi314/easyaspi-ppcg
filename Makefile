@@ -13,10 +13,12 @@ mips-%: LIBC := mips
 
 $(MAKECMDGOALS): %: %/a.out
 
-%/a.out: %/file.o
-	$(TRIPLE)-gcc -static $< -o $@
-	-$(QEMU) $@ $(ARGS); exit code: $?
- 
+%/a.out: %/file.o $(wildcard %/*.c)
+	# Also compile any C drivers that we need and link
+	$(TRIPLE)-gcc -static $^ -o $@
+	# - ignores exit code, as we don't really care about that in PPCG
+	-$(QEMU) $@ $(ARGS); echo "exit code: $$?"
+
 %/file.o: %/file.S packages
 # clang's assembler > all :P
 	clang --target=$(TRIPLE) -c $< -o $@
