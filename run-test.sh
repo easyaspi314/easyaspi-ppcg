@@ -33,7 +33,7 @@ run_executable()
     for i in $@; do
         printf "\"%s\" " "$i"
     done
-    set +o
+    printf "\n"
     eval $QEMU ./a.out $@
     echo "Return code: $?"
 }
@@ -65,7 +65,8 @@ fi
 # Link file.o, optionally with a driver.c or driver.S if it exists.
 $TRIPLE-gcc -static $LDFLAGS $(compgen -G 'driver.[cS]' || true) file.o -o a.out
 
-set +x
+# Disable error failing and command printing
+set +xe
 
 echo Running tests...
 # Run the tests.
