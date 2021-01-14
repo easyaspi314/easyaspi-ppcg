@@ -17,6 +17,6 @@ main:
         bl      printf
         pop     {r4, pc}
 
-        .align 4
+        .align 2
 .printf_str:
         .asciz "%f\n"

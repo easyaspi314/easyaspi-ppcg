@@ -22,6 +22,8 @@ $(MAKECMDGOALS): %: %/a.out
 	-printf "%s" "$(STDIN)" | $(QEMU) $@ $(ARGS); echo "exit code: $$?"
 
 %/file.o: %/file.S packages
+	@echo Source code:
+	@cat $<
 # clang's assembler > all :P
 	clang --target=$(TRIPLE) -c $< -o $@
 # Do a size -A and an objdump
