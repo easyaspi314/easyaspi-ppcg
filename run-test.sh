@@ -35,9 +35,9 @@ run_executable()
     eval $QEMU ./a.out $@
     echo "Return code: $?"
 }
-echo "Installing dependencies..."
+echo "Installing dependencies..." 
 sudo apt-get update -y -qq >/dev/null
-sudo apt-get install -y -qq gcc-$TARGET clang qemu-user-static libc6-dev-$LIBC-cross >/dev/null
+sudo apt-get install -y -qq gcc-$TRIPLE clang qemu-user-static libc6-dev-$LIBC-cross >/dev/null
 
 set -x
 
@@ -46,20 +46,20 @@ echo "Source code:"
 cat file.S
 
 # I prefer Clang's assembler, it is a little more flexible than GAS.
-clang --target=$TARGET -c file.S -o file.o
+clang --target=$TRIPLE -c file.S -o file.o
 echo "Object file info:"
 # Show details about the object file
-$TARGET-size -A file.o
-$TARGET-objdump -d file.o
+$TRIPLE-size -A file.o
+$TRIPLE-objdump -d file.o
 echo "Compiling test suite"
 
 # If we have _start as a symbol, we will compile without the stdlib.
-if [ $TARGET-nm -g file.o | grep -s _start ]; then
+if [ $TRIPLE-nm -g file.o | grep -s _start ]; then
     LDFLAGS="$LDFLAGS -nostdlib -ffreestanding"
 fi
 
 # Link file.o, optionally with a driver.c or driver.S if it exists.
-$TARGET-gcc -static $LDFLAGS "$(compgen -G 'driver.[cS]' || true)" file.o -o a.out
+$TRIPLE-gcc -static $LDFLAGS "$(compgen -G 'driver.[cS]' || true)" file.o -o a.out
 # Run the tests.
 if [ -f run.sh ]; then
     . run.sh
