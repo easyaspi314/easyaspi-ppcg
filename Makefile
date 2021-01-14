@@ -26,5 +26,6 @@ $(MAKECMDGOALS): %: %/a.out
 .PHONY: packages
 packages:
 	@echo Installing dependencies...
-	sudo apt-get update && sudo apt-get install -y -qq clang-10 qemu-user-static libc6-dev-$(LIBC)-cross gcc-$(TRIPLE) >/dev/null
+	@sudo apt-get update -qq >/dev/null
+	@sudo apt-get install -y -qq clang-10 qemu-user-static libc6-dev-$(LIBC)-cross gcc-$(TRIPLE) >/dev/null
 	
