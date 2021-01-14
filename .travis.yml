@@ -9,3 +9,12 @@ matrix:
       dist: bionic
       script:
         - make arm-largest-number-v1 
+
+    - name: arm-largest-number-v2
+      arch: amd64
+      compiler: clang
+      dist: bionic
+      script:
+        - make arm-largest-number-v2
+
+    
