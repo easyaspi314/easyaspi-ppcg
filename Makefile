@@ -15,7 +15,7 @@ $(MAKECMDGOALS): %: %/a.out
 
 %/a.out: %/file.o
 	$(TRIPLE)-gcc -static $< -o $@
-	$(QEMU) $@ $(ARGS)
+	-$(QEMU) $@ $(ARGS); exit code: $?
  
 %/file.o: %/file.S packages
 # clang's assembler > all :P
