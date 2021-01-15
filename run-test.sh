@@ -26,11 +26,14 @@ mips-*)
     ;;
 esac
 
+OUTPUT=""
+
 print_and_run()
 {
     echo "$ $@"
     OUTPUT="$(eval $@)"
-    printf "%s" "$OUTPUT"
+    # many programs don't output a newline so we do it automatically.
+    printf "%s\n" "$OUTPUT"
 }
 
 run_executable()
