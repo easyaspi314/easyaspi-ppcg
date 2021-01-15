@@ -56,7 +56,7 @@ checksum:
         subs    r0, #36
         bge     .Lmodulo_loop
 .Lmodulo_loop_end:
-        cmp.w   r0, #9 - 36
+        cmp     r0, #9 - 36
         it      gt
         addgt   r0, #'a'-10-'0'
         adds    r0, #'0'+36
