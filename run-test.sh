@@ -28,7 +28,7 @@ esac
 
 print_and_run()
 {
-    echo "$@"
+    echo "$ $@"
     eval $@
 }
 
@@ -56,12 +56,13 @@ travis_fold end "sourcecode"
 # I prefer Clang's assembler, it is a little more flexible than GAS.
 print_and_run clang --target=$TRIPLE -c file.S -o file.o
 
-travis_fold start "objinfo"
+travis_fold start "object_file_info"
 echo "Object file info:"
 # Show details about the object file
 print_and_run $TRIPLE-size -A file.o
 print_and_run $TRIPLE-objdump -d file.o
-travis_fold end "objinfo"
+echo
+travis_fold end "object_file_info"
 
 echo "Compiling test suite"
 
@@ -75,8 +76,8 @@ fi
 # Link file.o, optionally with a driver.c or driver.S if it exists.
 $TRIPLE-gcc -static $LDFLAGS $(compgen -G 'driver.[cS]' || true) file.o -o a.out
 
-# Disable error failing and command printing
-set +xe
+# Disable error failing as the exit code is often ignored in my programs
+set +e
 
 echo Running tests...
 # Run the tests.

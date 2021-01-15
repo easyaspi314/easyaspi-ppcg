@@ -1,10 +1,10 @@
-    .text
-    .syntax unified
-    .arch armv6t2
-    .thumb
+        .text
+        .syntax unified
+        .arch armv6t2
+        .thumb
 
-    .globl main
-    .thumb_func
+        .globl main
+        .thumb_func
 main:
         push    {r4, lr}
         // start number generation code
