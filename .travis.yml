@@ -38,4 +38,10 @@ matrix:
       dist: bionic
       script:
         - ./run-test.sh arm-silly-stocks
+
+    - name: arm-taxi-me-some-numbers
+      arch: amd64
+      dist: bionic
+      script:
+        - ./run-test.sh arm-taxi-me-some-numbers
     
