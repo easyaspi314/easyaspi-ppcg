@@ -29,7 +29,8 @@ esac
 print_and_run()
 {
     echo "$ $@"
-    eval $@
+    OUTPUT="$(eval $@)"
+    printf "%s" "$OUTPUT"
 }
 
 run_executable()
