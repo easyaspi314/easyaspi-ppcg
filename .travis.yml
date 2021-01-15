@@ -8,6 +8,7 @@ before_script:
 matrix:
   fast_finish: true
   include:
+    
     - name: arm-largest-number-v1
       arch: amd64
       dist: bionic
@@ -20,4 +21,9 @@ matrix:
       script:
         - ./run-test.sh arm-largest-number-v2
 
+    - name: arm-largest-number-v3
+      arch: amd64
+      dist: bionic
+      script:
+        - ./run-test.sh arm-largest-number-v3
     
