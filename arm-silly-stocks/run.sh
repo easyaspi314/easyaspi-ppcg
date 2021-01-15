@@ -13,7 +13,8 @@ do_test()
 }
 
 do_test "AABaBbba" "A7.49B2.47"
-# Note that the default printf rounding causes this to be -0.12.
+# Note that the default printf rounding in Bionic libc causes this to be -0.12.
 # This is considered to be OK by the rules.
-do_test "DGdg" "D5.13G-0.12"
+# However, glibc seems to round it correctly.
+do_test "DGdg" "D5.13G-0.13"
 do_test "ADJdja" "A2.24D5.38J-0.14"
