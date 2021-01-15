@@ -1,6 +1,10 @@
 # We handle everything in asm-tester.sh
 language: minimal
 
+# Export the fold function
+before_script:
+  - export -f travis_fold
+
 matrix:
   fast_finish: true
   include:
