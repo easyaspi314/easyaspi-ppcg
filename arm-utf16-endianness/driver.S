@@ -5,10 +5,14 @@
         .section ".writeable_text","awx",%progbits
 
 .macro $TEST expected:req, argc:req, argv:vararg
+        // Load string buffer into r0
         adr     r0, 1f
+        // Convert element count to size in bytes by doubling.
         movs    r1, #\argc * 2
+        // Skip over our constant pool
         b       3f
 1:
+        // The UTF-16 string 
         .short \argv
         .align 2
 2:
@@ -16,11 +20,15 @@
         .asciz "\argv"
         .align 2
 3:
+        // Call check_utf16
         bl      check_utf16
+        // Stringified version of the UTF-16 string
         adr     r1, 2b
+        // Expected
         movs    r2, #\expected
         // r3 is already in place
         adr     r0, .Lprintf_str
+        // printf("{ %s } -> expected: %d, got: %d\n", STR(arr), expected, retval)
         bl      printf
 .endm
 
