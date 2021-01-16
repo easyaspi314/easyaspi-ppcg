@@ -17,7 +17,7 @@
         .align 2
 3:
         bl      check_utf16
-        adr     r1, 3b
+        adr     r1, 2b
         movs    r2, #\expected
         // r3 is already in place
         adr     r0, .Lprintf_str
