@@ -55,6 +55,8 @@ cd $1
 travis_fold start "sourcecode"
 echo "Source code:"
 print_and_run cat file.S
+# avoid issues with lack of trailing newlines
+echo
 travis_fold end "sourcecode"
 
 # I prefer Clang's assembler, it is a little more flexible than GAS.
@@ -71,6 +73,7 @@ travis_fold end "objdump"
 LDFLAGS=
 
 # If we have _start as a symbol, we will compile without the stdlib.
+# All test drivers will use libc because it is easier.
 if [ $($TRIPLE-nm -g file.o | grep -s _start) ]; then
     LDFLAGS="$LDFLAGS -nostdlib -ffreestanding"
 fi
