@@ -62,7 +62,6 @@ travis_fold end "sourcecode"
 # I prefer Clang's assembler, it is a little more flexible than GAS.
 print_and_run clang --target=$TRIPLE -c file.S -o file.o
 
-
 echo "Object file info:"
 # Show details about the object file
 print_and_run $TRIPLE-size -A file.o
@@ -74,9 +73,7 @@ LDFLAGS=
 
 # If we have _start as a symbol, we will compile without the stdlib.
 # All test drivers will use libc because it is easier.
-if [ $($TRIPLE-nm -g file.o | grep -s _start) ]; then
-    LDFLAGS="$LDFLAGS -nostdlib -ffreestanding"
-fi
+$TRIPLE-nm -g file.o | grep -qs _start && LDFLAGS="$LDFLAGS -nostdlib -ffreestanding"
 
 # Link file.o, optionally with a driver.c or driver.S if it exists.
 print_and_run $TRIPLE-gcc -static $LDFLAGS $(compgen -G 'driver.[cS]' || true) file.o -o a.out
