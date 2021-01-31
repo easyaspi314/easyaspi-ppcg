@@ -68,3 +68,10 @@ matrix:
       dist: bionic
       script:
         - ./run-test.sh arm-rand-til-zero
+
+   - name: quine-error-hello
+     arch: amd64
+     dist: bionic
+     script:
+       - cd quine-error-hello
+       - ./run.sh
